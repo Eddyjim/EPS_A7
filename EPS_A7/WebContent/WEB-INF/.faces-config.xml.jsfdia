@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#index.xhtml" PATH="/index.xhtml"
+  SHAPE="336,240,50,73" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#index.xhtml:0" NAME="item"
+   PATH="/index.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="homeManager::#manager#homeManager.xhtml"
+    NAME="output2" PATH="/manager/homeManager.xhtml"
+    SHAPE="385,272,392,272,392,16,88,16,88,48,111,48"
+    TARGET="rules:#manager#homeManager.xhtml" TITLE="homeManager" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="homePatient::#patient#homePatient.xhtml"
+    NAME="output" PATH="/patient/homePatient.xhtml"
+    TARGET="rules:#patient#homePatient.xhtml" TITLE="homePatient" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="homeDoctor::#doctor#homeDoctor.xhtml"
+    NAME="output1" PATH="/doctor/homeDoctor.xhtml"
+    SHAPE="385,304,400,304,400,512,96,512,96,456,111,456"
+    TARGET="rules:#doctor#homeDoctor.xhtml" TITLE="homeDoctor" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#manager#homeManager.xhtml"
+  PATH="/manager/homeManager.xhtml" SHAPE="112,40,50,41" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#manager#homeManager.xhtml:0" NAME="item"
+   PATH="/manager/homeManager.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="logout_Manager::#index.xhtml" NAME="output"
+    PATH="/index.xhtml" TARGET="rules:#index.xhtml"
+    TITLE="logout_Manager" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#patient#homePatient.xhtml"
+  PATH="/patient/homePatient.xhtml" SHAPE="624,80,50,41" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#patient#homePatient.xhtml:0" NAME="item"
+   PATH="/patient/homePatient.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="Logout_Patient::#index.xhtml" NAME="output"
+    PATH="/index.xhtml"
+    SHAPE="673,112,680,112,680,72,320,72,320,248,335,248"
+    TARGET="rules:#index.xhtml" TITLE="Logout_Patient" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#doctor#homeDoctor.xhtml"
+  PATH="/doctor/homeDoctor.xhtml" SHAPE="112,448,50,41" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#doctor#homeDoctor.xhtml:0" NAME="item"
+   PATH="/doctor/homeDoctor.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="logout_Doctor::#index.xhtml" NAME="output"
+    PATH="/index.xhtml" TARGET="rules:#index.xhtml"
+    TITLE="logout_Doctor" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>

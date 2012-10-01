@@ -1,0 +1,11 @@
+<endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0">
+  <endpoint name="RegisterBillService"
+  			implementation="eci.cosw.eps.webservices.RegisterBillPaymentWS"
+  			url-pattern="/RegisterBillService" />
+  <endpoint name="UpdateBillService"
+  			implementation="eci.cosw.eps.webservices.RegisterBillAprobal"
+  			url-pattern="/UpdateBillService"/>
+  <endpoint name="VerifyAfiliateService"
+  			implementation="eci.cosw.eps.webservices.VerifyAfiliate"
+  			url-pattern="/VerifyAfiliateService"/>
+</endpoints>

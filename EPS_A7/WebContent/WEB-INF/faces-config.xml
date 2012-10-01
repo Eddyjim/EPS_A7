@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+ 
+ <managed-bean>
+  <managed-bean-name>patientActionsBB</managed-bean-name>
+  <managed-bean-class>eci.cosw.eps.view.PatientActionsBB</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ 
+ <managed-bean>
+  <managed-bean-name>homeDoctorBB</managed-bean-name>
+  <managed-bean-class>eci.cosw.eps.view.HomeDoctorBB</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ 
+ <managed-bean>
+  <managed-bean-name>referingToSpecialistBB</managed-bean-name>
+  <managed-bean-class>eci.cosw.eps.view.ReferingToSpecialistBB</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ 
+ <managed-bean>
+  <managed-bean-name>securityBean</managed-bean-name>
+  <managed-bean-class>eci.cosw.eps.view.login.SecurityBean</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ 
+ <managed-bean>
+  <managed-bean-name>homeManagerBB</managed-bean-name>
+  <managed-bean-class>eci.cosw.eps.view.HomeManagerBB</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ 
+ <navigation-rule>
+  <from-view-id>/index.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>homeManager</from-outcome>
+   <to-view-id>/manager/homeManager.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>homePatient</from-outcome>
+   <to-view-id>/patient/homePatient.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>homeDoctor</from-outcome>
+   <to-view-id>/doctor/homeDoctor.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ 
+ <navigation-rule>
+  <from-view-id>/manager/homeManager.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>logout_Manager</from-outcome>
+   <to-view-id>/index.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ 
+ <navigation-rule>
+  <from-view-id>/patient/homePatient.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>Logout_Patient</from-outcome>
+   <to-view-id>/index.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ 
+ <navigation-rule>
+  <from-view-id>/doctor/homeDoctor.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>logout_Doctor</from-outcome>
+   <to-view-id>/index.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ 
+</faces-config>

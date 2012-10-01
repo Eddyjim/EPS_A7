@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory >
+  <property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
+  <property name="hibernate.connection.password">cknorris</property>
+  <property name="hibernate.connection.url">jdbc:mysql://desarrollo.is.escuelaing.edu.co/coswa7produccion</property>
+  <property name="hibernate.connection.username">coswa7produccion</property>
+  <property name="hibernate.default_schema">coswa7produccion</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+  
+  <property name="show_sql">true</property>
+  <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+  
+  <mapping  class="eci.cosw.eps.model.Afiliate"/>
+  <mapping  class="eci.cosw.eps.model.Appointment"/>
+  <mapping  class="eci.cosw.eps.model.AppointmentId"/>
+  <mapping  class="eci.cosw.eps.model.Bill"/>
+  <mapping  class="eci.cosw.eps.model.Doctor"/>
+  <mapping  class="eci.cosw.eps.model.Ips"/>
+  <mapping  class="eci.cosw.eps.model.Schedule"/>
+  <mapping  class="eci.cosw.eps.model.ScheduleId"/>
+  <mapping  class="eci.cosw.eps.model.Specialty"/>
+ </session-factory>
+</hibernate-configuration>
+

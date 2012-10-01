@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="3.0"
+ xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+ <display-name>EPS_A7</display-name>
+
+ 	<welcome-file-list>
+  		<welcome-file>faces/index.xhtml</welcome-file>
+ 	</welcome-file-list>
+ 	
+ 	<servlet>
+ 		<servlet-name>Faces Servlet</servlet-name>
+  		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+  		<load-on-startup>1</load-on-startup>
+ 	</servlet>
+ 	
+ 	<servlet-mapping>
+  		<servlet-name>Faces Servlet</servlet-name>
+  		<url-pattern>/faces/*</url-pattern>
+ 	</servlet-mapping>
+ 	
+ 	<context-param>
+  		<description>
+  			State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2
+  		</description>
+  		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+  		<param-value>server</param-value>
+ 	</context-param>
+ 	
+ 	<context-param>
+  		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+  		<param-value>resources.application</param-value>
+ 	</context-param>
+ 	
+	 <context-param>
+	  	<param-name>javax.faces.PROJECT_STAGE</param-name>
+	  	<param-value>Development</param-value>
+	 </context-param>
+	 
+	 <context-param>
+		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>javax.faces.VALIDATE_EMPTY_FIELDS</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>aristo</param-value>
+	</context-param>
+	
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext-security.xml</param-value>
+  	</context-param>
+ 
+	 <listener>
+		<listener-class>
+			com.sun.faces.config.ConfigureListener
+		</listener-class>
+	</listener>
+	
+	 <listener>
+	  	<listener-class>
+	  		com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+	  	</listener-class>
+	 </listener>
+ 
+	 <!-- Web Services  -->
+	 
+	 <servlet>
+	  	<servlet-name>RegisterBillService</servlet-name>
+	  	<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+	  	<load-on-startup>1</load-on-startup>
+	 </servlet>
+	 
+	 <servlet>
+	  	<servlet-name>UpdateBillService</servlet-name>
+	  	<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+	  	<load-on-startup>1</load-on-startup>
+	 </servlet>
+	 
+	 <servlet>
+		<servlet-name>VerifyAfiliateService</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	 </servlet>
+	 
+	 <servlet-mapping>
+	  	<servlet-name>RegisterBillService</servlet-name>
+	  	<url-pattern>/RegisterBillService</url-pattern>
+	 </servlet-mapping>
+	 
+	 <servlet-mapping>
+	  	<servlet-name>UpdateBillService</servlet-name>
+	  	<url-pattern>/UpdateBillService</url-pattern>
+	 </servlet-mapping>
+	  
+	 <servlet-mapping>
+		<servlet-name>VerifyAfiliateService</servlet-name>
+		<url-pattern>/VerifyAfiliateService</url-pattern>
+	 </servlet-mapping>
+	 
+	 <!-- Seguridad -->
+	 <listener>
+    	<listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+  	</listener>
+  	
+  	<filter>
+    	<filter-name>springSecurityFilterChain</filter-name>
+    	<filter-class>
+            org.springframework.web.filter.DelegatingFilterProxy
+        </filter-class>
+  	</filter>
+  	
+  	<filter-mapping>
+    	<filter-name>springSecurityFilterChain</filter-name>
+    	<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+	 
+</web-app>

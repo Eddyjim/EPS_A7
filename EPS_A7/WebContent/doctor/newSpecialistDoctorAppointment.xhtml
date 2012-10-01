@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+ 
+
+<f:view locale="es">
+	<h:head>
+		 <style type="text/css">
+	        .ui-widget,
+	        .ui-widget .ui-widget {
+	               font-size: 12px !important;
+	         }	
+    	</style>
+		<title>
+			<h:outputText value="Rerffer to a Specialist" />
+		</title>
+	</h:head>
+	<h:body>
+		<h:form id="form">
+			
+			<!-- User notifications -->
+			<p:growl id="growl" showDetail="true" sticky="false" />
+			
+			<!-- Loading Doctors bar -->
+			<p:dialog id="dialog1" header="Loading Specialist in #{referingToSpecialistBB.selectedSpecialty.name}" widgetVar="bar1" modal="true" hideEffect="" width="500"
+						closable="false" draggable="false" resizable="false">  
+          		<p:progressBar widgetVar="pbAjax1" ajax="true" value="#{referingToSpecialistBB.progress}" labelTemplate="{value}%"
+    			 				styleClass="animated" interval="1000">  
+        			<p:ajax event="complete" oncomplete="bar1.hide();"
+        					update=":form:growl,form:doctors"/>  
+    			</p:progressBar>
+    		</p:dialog> 
+			
+			<!-- Loading Schedule bar -->
+			<p:dialog id="dialog" header="Loading Appointments from Dr. #{referingToSpecialistBB.selectedDoctor.name}" widgetVar="bar" modal="true" hideEffect="" width="500"
+						closable="false" draggable="false" resizable="false">  
+          		<p:progressBar widgetVar="pbAjax" ajax="true" value="#{referingToSpecialistBB.progress}" labelTemplate="{value}%"
+    			 				styleClass="animated" interval="1000">  
+        			<p:ajax event="complete" oncomplete="bar.hide();"
+        					update=":form:growl,:form:day1,:form:day2,:form:day3,:form:day4,:form:day5,:form:day6,:form:day7"/>  
+    			</p:progressBar>
+    		</p:dialog> 
+			
+			<p:layout fullPage="true">
+			    
+  				<!--Top panel -->
+    			<p:layoutUnit position="north" size="50">  
+        			Welcome To EPS Troll!!!!
+        			<p:commandLink id="logout" actionListener="#{homeDoctorBB.logout}" style="margin-left:15px;" ajax="false" value="Logout"/>  
+				 
+    			</p:layoutUnit>
+    			  
+  				<!-- Bottom panel -->
+    			<p:layoutUnit position="south" size="100" header="Register Specialist Appointment" >  
+        			<p:panelGrid columns="2">    
+        				<h:outputLabel id="sp" value="Affiliate #{homeDoctorBB.selectedAfiliate}"/>
+					    <h:outputLabel id="ss" value="Specialty #{referingToSpecialistBB.selectedSpecialty.name}"/>
+					    <h:outputLabel id="sd" value="Dr. #{referingToSpecialistBB.selectedDoctor.name}"/>  
+					    <h:outputLabel id="sa" value="#{referingToSpecialistBB.selectedAppointment}" />
+					    
+					    
+					    <f:facet name="footer">  
+					        <p:commandButton value="RegisterAppointment" icon="ui-icon-check" style="margin:0"
+					        			actionListener="#{referingToSpecialistBB.registerAppointment}" update=":form:sd,:form:sa"/>
+					        
+					    </f:facet>  
+					</p:panelGrid>
+        			  
+    			</p:layoutUnit>  
+  
+    			<p:layoutUnit position="west" size="400" header="Specialist">
+    			
+	    			<p:commandButton id="LoadSpecialists" value="Load Specialists" onclick="bar1.show();pbAjax1.start();" 
+	    						actionListener="#{referingToSpecialistBB.loadSpecialists}" update=":form:growl,form:dialog1"/>
+	    			
+	    			<p:commandButton id="LoadSchedules" value="Load Schedules"  onclick="bar.show();pbAjax.start();"
+	    								actionListener="#{referingToSpecialistBB.loadSchedules}" update=":form:growl,form:dialog"/>
+	  				
+	  				<p:panelGrid columns="2" style="width:100%" >
+		  				<p:dataTable id="specialties" var="spec" value="#{referingToSpecialistBB.specialties}" rowKey="#{spec.id}"  
+		                 				selection="#{referingToSpecialistBB.selectedSpecialty}" selectionMode="single" >  
+		
+		  					    <p:column headerText="Specialty" >
+		  					    	#{spec.name}
+						        </p:column>  
+						 
+						</p:dataTable>
+						
+						<p:dataTable id="doctors" var="doc" value="#{referingToSpecialistBB.specialists}" rowKey="#{doc.id}"  
+		                 				selection="#{referingToSpecialistBB.selectedDoctor}" selectionMode="single">
+								<p:column headerText="Doctor" >
+		  					    	#{doc.name}
+						        </p:column>  
+									
+						</p:dataTable> 
+					</p:panelGrid>
+				</p:layoutUnit> 
+				 
+			    <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true">  
+			        <h:outputText value="Right unit content." />
+			        <p:panelGrid columns="1" style="width:100%">
+			        	<p:commandButton id="selectIps" value="Ips" actionListener="#{referingToSpecialistBB.toIps}"></p:commandButton>
+			        	<p:commandButton id="selectEps" value="Eps" actionListener="#{referingToSpecialistBB.toEps}"></p:commandButton>
+			       </p:panelGrid> 
+			    </p:layoutUnit>  
+  				
+  				<!-- Selected doctor's schedule -->
+			    <p:layoutUnit position="center" id="centro">
+			      	<p:panelGrid columns="7" style="width:100%">
+				      	<!-- Day 1 -->
+				    	<p:dataTable id="day1" var="appointment" value="#{referingToSpecialistBB.day1}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{referingToSpecialistBB.header1}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{referingToSpecialistBB.selectedAppointment}" /> 
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>  
+					     </p:dataTable>
+					     
+					      
+					    <!-- Day 2 -->
+				    	<p:dataTable id="day2" var="appointment" value="#{referingToSpecialistBB.day2}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{referingToSpecialistBB.header2}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{referingToSpecialistBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>    
+					    </p:dataTable>
+					      
+					    <!-- Day 3 -->
+				    	<p:dataTable id="day3" var="appointment" value="#{referingToSpecialistBB.day3}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{referingToSpecialistBB.header3}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{referingToSpecialistBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column> 
+					    </p:dataTable>
+					      
+					    <!-- Day 4 -->
+				    	<p:dataTable id="day4" var="appointment" value="#{referingToSpecialistBB.day4}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{referingToSpecialistBB.header4}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{referingToSpecialistBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>  
+					    </p:dataTable>
+					      
+					    <!-- Day 5 -->
+				    	<p:dataTable id="day5" var="appointment" value="#{referingToSpecialistBB.day5}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{referingToSpecialistBB.header5}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{referingToSpecialistBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column> 
+					    </p:dataTable>
+					      
+					    <!-- Day 6 -->
+				    	<p:dataTable id="day6" var="appointment" value="#{referingToSpecialistBB.day6}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{referingToSpecialistBB.header6}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{referingToSpecialistBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>    
+					    </p:dataTable>
+					      
+					    <!-- Day 7 -->
+				    	<p:dataTable id="day7" var="appointment" value="#{referingToSpecialistBB.day7}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{referingToSpecialistBB.header7}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{referingToSpecialistBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>    
+					    </p:dataTable>
+				     </p:panelGrid>
+				     
+				     <p:dialog header="Appointment Detail" widgetVar="appDialog" modal="falce">  
+				        <p:outputPanel id="appDetail" style="text-align:center;">    
+				              
+				            <h:panelGrid  columns="2" cellpadding="5">  
+				                <h:outputLabel for="doctorD" value="Doctor: " />  
+				                <h:outputText id="doctorD" value="#{referingToSpecialistBB.selectedDoctor.name}" />  
+				                  
+				                <h:outputLabel for="appD" value="Date: " />  
+				                <h:outputText id="appD" value="#{referingToSpecialistBB.selectedAppointment}" />  
+				            </h:panelGrid> 
+				            	<p:commandButton value="Register Appointment" onclick="appDialog.hide();"
+				            			actionListener="#{referingToSpecialistBB.registerAppointment}" update=":form:sd,:form:sa"/>
+				        </p:outputPanel>  
+				    </p:dialog> 
+				            
+			    </p:layoutUnit> 
+  
+			</p:layout> 
+		</h:form>
+	</h:body>
+</f:view>  
+
+</html>

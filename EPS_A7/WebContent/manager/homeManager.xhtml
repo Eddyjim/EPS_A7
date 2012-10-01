@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+ 
+
+<f:view locale="es">
+	<h:head>
+		 <style type="text/css">
+	        .ui-widget,
+	        .ui-widget .ui-widget {
+	               font-size: 12px !important;
+	         }	
+    	</style>
+		<title>
+			<h:outputText value="Home Manager" />
+		</title>
+	</h:head>
+	<h:body>
+		<h:form id="form">
+			
+			<!-- User notifications -->
+			<p:growl id="growl" showDetail="true" sticky="false" />
+			
+			<!-- Loading bar -->
+			
+			<p:layout fullPage="true">
+			    
+  				<!--Top panel -->
+    			<p:layoutUnit position="north" size="50">  
+        			Welcome To EPS Troll!!!! Don't steal to much money ;)
+        			<p:commandLink id="logout" action="logout_Manager" actionListener="#{homeManagerBB.logout}"
+        						style="margin-left:15px;" ajax="false" value="Logout"/>  
+				 
+    			</p:layoutUnit>
+    			    
+    			<p:layoutUnit position="west" size="200" header="Recent Bills">
+    				<p:commandButton id="LoadBills" value="Details"
+    								 update=":form:detailsBill"/>
+  				
+			        <p:dataTable id="bills" var="bill" value="#{homeManagerBB.recentBills}" rowKey="#{bill.id}"  
+                 				selection="#{homeManagerBB.selectedBill}" selectionMode="single" >  
+  						
+  					    <p:column headerText="Bill" >
+  					    	#{bill.id}
+				        </p:column>  
+				  
+				    </p:dataTable>
+			    
+    			</p:layoutUnit>    
+  				
+  				<!-- Selected Bill Details -->
+			    <p:layoutUnit position="center" id="centro">
+			    
+			    	<p:fieldset id="detailsBill" legend="Bill #{homeManagerBB.selectedBill.id}">  
+					    <h:panelGrid columns="2" cellpadding="10">
+					      
+					        <p:graphicImage value="/images/bill.png" />
+					        <p:commandButton value="Send for aproval" update=":form:detailsBill"
+					        				actionListener="#{homeManagerBB.sendBill}"/>
+					          
+					        <h:outputLabel value="From IPS :" />
+					        <h:outputText value="#{homeManagerBB.selectedBill.ips.name}"/>    
+					            
+					        <h:outputLabel value="Value ($) :"/>
+					        <h:outputText value="#{homeManagerBB.selectedBill.value}"/>  
+					    </h:panelGrid>  
+					</p:fieldset>
+					   
+				     <p:dialog header="Appointment Detail" widgetVar="appDialog" modal="false">  
+				        <p:outputPanel id="appDetail" style="text-align:center;">    
+				              
+				            <h:panelGrid  columns="2" cellpadding="5">  
+				                <h:outputLabel for="doctorD" value="Doctor: " />  
+				                <h:outputText id="doctorD" value="#{patientActionsBB.selectedDoctor.name}" />  
+				                  
+				                <h:outputLabel for="appD" value="Date: " />  
+				                <h:outputText id="appD" value="#{patientActionsBB.selectedAppointment}" />  
+				            </h:panelGrid> 
+				            	<p:commandButton value="Register Appointment" onclick="appDialog.hide();"
+				            			actionListener="#{patientActionsBB.registerAppointment}"/>
+				        </p:outputPanel>  
+				    </p:dialog> 
+				            
+			    </p:layoutUnit>  
+  
+			</p:layout> 
+		</h:form>
+	</h:body>
+</f:view>  
+
+</html>

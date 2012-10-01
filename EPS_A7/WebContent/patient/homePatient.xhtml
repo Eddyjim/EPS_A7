@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+ 
+
+<f:view locale="es">
+	<h:head>
+		 <style type="text/css">
+	        .ui-widget,
+	        .ui-widget .ui-widget {
+	               font-size: 12px !important;
+	         }	
+    	</style>
+		<title>
+			<h:outputText value="Home Patient" />
+		</title>
+	</h:head>
+	<h:body>
+		<h:form id="form">
+			
+			<!-- User notifications -->
+			<p:growl id="growl" showDetail="true" sticky="false" />
+			
+			<!-- Loading bar -->
+			<p:dialog id="dialog" header="Loading shcedule from Dr. #{patientActionsBB.selectedDoctor.name}" widgetVar="bar" modal="true" hideEffect="" width="500"
+						closable="false" draggable="false" resizable="false">  
+          		<p:progressBar widgetVar="pbAjax" ajax="true" value="#{patientActionsBB.progress}" labelTemplate="{value}%"
+    			 				styleClass="animated" interval="1000">  
+        			<p:ajax event="complete" oncomplete="bar.hide();"
+        					update=":form:growl,:form:day1,:form:day2,:form:day3,:form:day4,:form:day5,:form:day6,:form:day7"/>  
+    			</p:progressBar>
+    		</p:dialog> 
+			
+			<p:layout fullPage="true">
+			    
+  				<!--Top panel -->
+    			<p:layoutUnit position="north" size="50">  
+        			Welcome To EPS Troll!!!!
+        			<p:commandLink id="logout" action="logout_Patient" actionListener="#{patientActionsBB.logout}"
+        						style="margin-left:15px;" ajax="false" value="Logout"/>  
+				 
+    			</p:layoutUnit>
+    			  
+  				<!-- Bottom panel -->
+    			<p:layoutUnit position="south" size="100" header="Register Appointment" >  
+        			<p:panelGrid columns="2">    
+					    <h:outputLabel id="sd" value="Dr. #{patientActionsBB.selectedDoctor.name}"/>  
+					    <h:outputLabel id="sa" value="#{patientActionsBB.selectedAppointment}" />
+					    
+					    <f:facet name="footer">  
+					        <p:commandButton value="RegisterAppointment" icon="ui-icon-check" style="margin:0"
+					        			actionListener="#{patientActionsBB.registerAppointment}" update=":form:sd,:form:sa"/>  
+					    </f:facet>  
+					</p:panelGrid>
+        			  
+    			</p:layoutUnit>  
+  
+    			<p:layoutUnit position="west" size="200" header="General Doctors">
+    				<p:commandButton id="LoadSchedules" value="Load Schedules"  onclick="bar.show();pbAjax.start();"
+    								actionListener="#{patientActionsBB.loadSchedules}" update=":form:growl,form:dialog"/>
+  				
+			        <p:dataTable id="doctors" var="doc" value="#{patientActionsBB.generalDoctors}" rowKey="#{doc.id}"  
+                 				selection="#{patientActionsBB.selectedDoctor}" selectionMode="single" >  
+  						
+  					    <p:column headerText="Doctor Name" >
+  					    	#{doc.name}
+				        </p:column>  
+				  
+				    </p:dataTable>
+			    
+    			</p:layoutUnit>  
+  
+			    <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true">  
+			        <h:outputText value="Right unit content." />  
+			    </p:layoutUnit>  
+  				
+  				<!-- Selected doctor's schedule -->
+			    <p:layoutUnit position="center" id="centro">
+			      	<p:panelGrid columns="7" style="width:100%">
+				      	<!-- Day 1 -->
+				    	<p:dataTable id="day1" var="appointment" value="#{patientActionsBB.day1}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{patientActionsBB.header1}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{patientActionsBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>  
+					     </p:dataTable>
+					     
+					      
+					    <!-- Day 2 -->
+				    	<p:dataTable id="day2" var="appointment" value="#{patientActionsBB.day2}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{patientActionsBB.header2}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{patientActionsBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>    
+					    </p:dataTable>
+					      
+					    <!-- Day 3 -->
+				    	<p:dataTable id="day3" var="appointment" value="#{patientActionsBB.day3}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{patientActionsBB.header3}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{patientActionsBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column> 
+					    </p:dataTable>
+					      
+					    <!-- Day 4 -->
+				    	<p:dataTable id="day4" var="appointment" value="#{patientActionsBB.day4}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{patientActionsBB.header4}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{patientActionsBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>  
+					    </p:dataTable>
+					      
+					    <!-- Day 5 -->
+				    	<p:dataTable id="day5" var="appointment" value="#{patientActionsBB.day5}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{patientActionsBB.header5}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{patientActionsBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column> 
+					    </p:dataTable>
+					      
+					    <!-- Day 6 -->
+				    	<p:dataTable id="day6" var="appointment" value="#{patientActionsBB.day6}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{patientActionsBB.header6}">
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{patientActionsBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>    
+					    </p:dataTable>
+					      
+					    <!-- Day 7 -->
+				    	<p:dataTable id="day7" var="appointment" value="#{patientActionsBB.day7}" rowKey="#{appointment}">  
+			        		<p:column headerText="#{patientActionsBB.header7}" >
+			        			<h:panelGrid columns="1" style="width:100%">   
+				                    <h:outputText value="#{appointment}" />
+				                    <p:commandLink update=":form:appDetail" oncomplete="appDialog.show()" title="View Detail">
+				                    	<p:graphicImage value="../images/search.png"/>   
+				                        <f:setPropertyActionListener value="#{appointment}"   
+				                                target="#{patientActionsBB.selectedAppointment}" />  
+				                    </p:commandLink>  
+				                </h:panelGrid>
+			        		</p:column>    
+					    </p:dataTable>
+				     </p:panelGrid>
+				     
+				     <p:dialog header="Appointment Detail" widgetVar="appDialog" modal="falce">  
+				        <p:outputPanel id="appDetail" style="text-align:center;">    
+				              
+				            <h:panelGrid  columns="2" cellpadding="5">  
+				                <h:outputLabel for="doctorD" value="Doctor: " />  
+				                <h:outputText id="doctorD" value="#{patientActionsBB.selectedDoctor.name}" />  
+				                  
+				                <h:outputLabel for="appD" value="Date: " />  
+				                <h:outputText id="appD" value="#{patientActionsBB.selectedAppointment}" />  
+				            </h:panelGrid> 
+				            	<p:commandButton value="Register Appointment" onclick="appDialog.hide();"
+				            			actionListener="#{patientActionsBB.registerAppointment}" update=":form:sd,:form:sa"/>
+				        </p:outputPanel>  
+				    </p:dialog> 
+				            
+			    </p:layoutUnit>  
+  
+			</p:layout> 
+		</h:form>
+	</h:body>
+</f:view>  
+
+</html>

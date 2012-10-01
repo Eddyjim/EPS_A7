@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/security
+                         http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
+ 
+ 	<beans:bean id="secDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">		
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="url" value="jdbc:mysql://desarrollo.is.escuelaing.edu.co/coswa7produccion" />
+		<beans:property name="username" value="coswa7produccion" />
+		<beans:property name="password" value="cknorris" />
+	</beans:bean>
+ 
+    <http auto-config="true">
+        <intercept-url pattern="**/doctor/**" access="ROLE_DOCTOR"/>
+        <intercept-url pattern="/faces/doctor/**" access="ROLE_DOCTOR"/>
+        <intercept-url pattern="**/patient/**" access="ROLE_PATIENT"/>
+        <intercept-url pattern="/faces/patient/**" access="ROLE_PATIENT"/>
+        <intercept-url pattern="**/manager/**" access="ROLE_OFFICE"/>
+        <intercept-url pattern="/faces/manager/**" access="ROLE_OFFICE"/>
+        <!-- <form-login login-page='/login.jsp'/> -->
+        <logout />    
+    </http>
+ 
+    <authentication-provider>
+    	<password-encoder hash="md5"/>    
+		<jdbc-user-service data-source-ref="secDataSource"
+			authorities-by-username-query="SELECT usuarios.userid,
+												roles.role
+										   FROM  (coswa7produccion.USERS_has_ROLES usuarios_has_roles
+										   			INNER JOIN coswa7produccion.ROLES roles 
+										   			ON (usuarios_has_roles.ROLES_roleid = roles.roleid))
+										   			INNER JOIN coswa7produccion.USERS usuarios
+										   			ON (usuarios_has_roles.USERS_userid = usuarios.userid)
+										  where usuarios.userid=?"
+			users-by-username-query="SELECT usuarios.userid as 'username',
+											usuarios.password,
+											usuarios.enabled
+									FROM coswa7produccion.USERS usuarios
+									where usuarios.userid=?" />
+	</authentication-provider>	
+</beans:beans>

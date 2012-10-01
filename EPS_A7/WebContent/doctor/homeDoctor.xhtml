@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<f:view locale="es">
+	<h:head>
+		<style type="text/css">
+	        .ui-widget,
+	        .ui-widget .ui-widget {
+	               font-size: 12px !important;
+	         }	
+    	</style>
+		<title>
+			<h:outputText value="EPS Doctor" />
+		</title>
+	</h:head>
+	<h:body>
+		<h:form id="form">
+					
+			
+			<!-- User notifications -->
+			<p:growl id="growl" showDetail="true" sticky="false"/>
+			
+			<!-- Loading Affiliate bar --> 
+			<p:dialog id="dialog" header="Loading the #{homeDoctorBB.afiliateInformation.name}'s Information" widgetVar="bar" modal="true" hideEffect="" width="500"
+						closable="false" draggable="false" resizable="false">  
+          		<p:progressBar widgetVar="pbAjax" ajax="true" value="#{homeDoctorBB.progress}" labelTemplate="{value}%"
+    			 				styleClass="animated" interval="1000">  
+        			<p:ajax event="complete" oncomplete="bar.hide();"
+        					update=":form:growl,:form:information"/>  
+    			</p:progressBar>
+    		</p:dialog> 
+			    
+							      
+				    <p:layout resizeTitle="false" style="width:600px;height:350px" >
+				    	<!-- north Pane -->
+				    	<p:layoutUnit position="north">
+				    		<p:commandLink id="logout" action="logout_Doctor" actionListener="#{homeDoctorBB.logout}"
+        						style="margin-left:15px;" ajax="false" value="Logout"/>  
+				
+				    	</p:layoutUnit>
+				    	
+				    	<!--  West Pane -->
+				    	<p:layoutUnit position="west" header="Appointments" style="width:25%;height:100%">
+				    		
+				    		<p:dataTable id="Appointments" var="app" value="#{homeDoctorBB.today}" rowKey="#{app}"  
+                 				selection="#{homeDoctorBB.selectedAfiliate}" selectionMode="single">  
+  						
+		  					    <p:column style="text-align:center" >
+		  					    	#{app.id.date}
+		  					    	<p><b>#{app.afiliate.name}</b></p>
+		  					    </p:column>  
+						    	
+						    </p:dataTable>
+						    
+						    <p:commandButton id="LoadInformation" value="Load Afiliate's Information"  onclick="bar.show();pbAjax.start();dialogReffer.show(); "
+    								actionListener="#{homeDoctorBB.loadInformation}" update=":form:growl,form:information,:form:history"/>
+						    
+				    	</p:layoutUnit>
+				    	
+				    	<!--  Center Pane -->
+				    	<p:layoutUnit position="center" header="Afiliate" style="width:75%;height:100%">
+				    		<p:outputPanel id="information" style="text-align:left">
+				    			<b>Name:</b>
+				    			<p>#{homeDoctorBB.afiliateInformation.name}</p>
+				    			<p><b>Id:</b></p>
+				    			<p>#{homeDoctorBB.afiliateInformation.id}</p>
+				    		</p:outputPanel>
+				    		<p:scrollPanel id="history" style="text-align:justify">
+				    			<p><b>Clinical History:</b></p>
+				    			#{homeDoctorBB.clinicalHistory}
+				    		</p:scrollPanel>
+				    		
+				    		<!-- Appointment State -->
+				    		<h:outputText value="Please Choose The Appointment's State" />
+				    		
+				    		<p:separator />  
+				    		
+				    		<b><h:outputText value="Appointment: " /></b>  
+					        
+					        <p:selectOneButton value="#{homeDoctorBB.state}">  
+					            <f:selectItem itemLabel="Acomplished" itemValue="1" />  
+					            <f:selectItem itemLabel="Unacomplished" itemValue="2" />  
+					            <f:selectItem itemLabel="Canceled" itemValue="3" />  
+					        </p:selectOneButton>
+					        
+					         <p:commandButton id="save" value="Submit" onclick="bar.show();pbAjax.start();" 
+					         			actionListener="#{homeDoctorBB.update}" update=":form:growl"/>
+					         
+					         <b />
+					         <p:separator />
+					         <b><h:outputText value="Another Options: " /></b>
+					         	<p:dialog widgetVar="dialogReffer">
+									<p:button id="reffer" value="Reffer to a Specialist" href="/faces/doctor/newSpecialistDoctorAppointment.xhtml"/> 
+								</p:dialog>			
+					     				
+				    		
+				    	</p:layoutUnit>
+				    </p:layout>  
+			      
+		<!-- </p:dialog>  -->
+			
+				
+			
+			<!-- Specialists -->
+			<p:dialog header="Specilist" draggable="true" widgetVar="specialist" showEffect="fade" hideEffect="fade">  
+			    
+			</p:dialog>  
+			  
+		</h:form>
+	</h:body>
+</f:view> 
+</html>
